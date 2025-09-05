@@ -1,0 +1,5 @@
+channels:
+  - bioconda
+dependencies:
+  - tiddit=3.9.3
+  - bwa=0.7.19

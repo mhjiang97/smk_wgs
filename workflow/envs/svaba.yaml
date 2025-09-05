@@ -1,0 +1,4 @@
+channels:
+  - bioconda
+dependencies:
+  - svaba=1.2.0

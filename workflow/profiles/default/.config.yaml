@@ -1,0 +1,34 @@
+software-deployment-method:
+  - conda
+conda-prefix: /.snakemake/envs/smk_sv_ngs
+printshellcmds: True
+keep-incomplete: True
+cores: 80
+resources:
+  mem_mb: 500000  # 500GB
+default-resources:
+  mem_mb: 5000  # 5GB
+set-threads:
+  fastp: 4
+  fastqc: 4
+  bwamem2: 10
+  manta: 10
+  tiddit: 10
+  wham: 10
+  gridss: 10
+  svaba: 10
+  duphold: 5
+  vep: 5
+  filter_annotations: 20
+set-resources:
+  mark_duplicates:
+    mem_mb: 100000  # 100GB
+  base_recalibrator:
+    mem_mb: 50000  # 50GB
+  apply_bqsr:
+    mem_mb: 50000  # 50GB
+  gridss:
+    mem_mb: 50000  # 50GB
+    mem_mb_other: 10000  # 10GB
+  snpeff:
+    mem_mb: 50000  # 50GB
