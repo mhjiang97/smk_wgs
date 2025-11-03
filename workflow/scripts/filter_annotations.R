@@ -1,7 +1,4 @@
-libs_r <- snakemake@params[["libs_r"]]
-if (!is.null(libs_r)) {
-  .libPaths(c(libs_r, .libPaths()))
-}
+.libPaths(paste0(R.home(), "/library"))
 snakemake@source("utils.R")
 load_pkg(
   c(
@@ -28,7 +25,7 @@ callers <- sort(snakemake@params[["callers"]])
 terms_relative <- snakemake@params[["terms_relative"]]
 threads <- snakemake@threads
 s <- snakemake@wildcards[["sample"]]
-t <- snakemake@wildcards[["caller"]]
+t <- snakemake@wildcards[["caller_sv"]]
 v <- snakemake@wildcards[["type_sv"]]
 
 logger::log_info("Reading AnnotSV annotations")

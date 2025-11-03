@@ -1,6 +1,6 @@
 rule svaba:
     conda:
-        "../../envs/svaba.yaml"
+        "../../../envs/svaba.yaml"
     input:
         bam=f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam",
         fasta=config["fasta"],
@@ -34,7 +34,7 @@ rule svaba:
 
 rule format_svaba:
     conda:
-        "../../envs/r.yaml"
+        "../../../envs/r.yaml"
     input:
         vcf="svaba/{sample}/{sample}.svaba.sv.vcf",
     output:

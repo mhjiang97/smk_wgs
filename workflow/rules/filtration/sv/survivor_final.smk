@@ -1,11 +1,11 @@
 rule survivor_final:
     priority: 10
     conda:
-        "../../envs/survivor.yaml"
+        "../../../envs/survivor.yaml"
     input:
         vcfs=expand(
             "{caller}/{{sample}}/merged/filtered/{{sample}}.{{type_sv}}.vcf",
-            caller=sorted(CALLERS),
+            caller=sorted(CALLERS_SV),
         ),
     output:
         list="survivor/{sample}/final/vcfs.{type_sv}.list",
@@ -14,7 +14,7 @@ rule survivor_final:
         vcf="survivor/{sample}/final/{sample}.{type_sv}.merged.vcf",
     params:
         min_size=config["min_size"],
-        callers=sorted(CALLERS),
+        callers=sorted(CALLERS_SV),
         distance_sv=lambda wildcards: config["distance_sv"][wildcards.type_sv],
         n_callers=lambda wildcards: max(config["n_callers"][wildcards.type_sv] - 1, 1),
         consider_type=lambda wildcards: format_survivor_parameters(
@@ -29,4 +29,4 @@ rule survivor_final:
     log:
         "logs/{sample}/survivor_final.{type_sv}.log",
     script:
-        "../../scripts/survivor.sh"
+        "../../../scripts/survivor.sh"

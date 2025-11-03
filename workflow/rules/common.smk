@@ -18,62 +18,40 @@ if config["dir_run"] and config["dir_run"] is not None:
 # *--------------------------------------------------------------------------* #
 # * Constants                                                                * #
 # *--------------------------------------------------------------------------* #
-CALLERS = ["gridss", "manta", "svaba", "tiddit", "wham"]
-CALLERS.sort()
-
-CALLER2FIELD = {
+CALLERS_SV = ["gridss", "manta", "svaba", "tiddit", "wham"]
+CALLERS_SV.sort()
+CALLERS_MUTATION = ["mutect2"]
+ANNOTATORS = ["vep", "snpeff"]
+MUTATIONS = ["snvs", "indels"]
+CALLER2FMTS = {
     "gridss": ["GT", "AF"],
     "manta": ["PR", "SR"],
     "svaba": ["GT", "LO", "DR", "SR", "PL", "LR", "GQ", "DP", "AD"],
     "tiddit": ["GT", "CN", "COV", "DV", "RV", "LQ", "RR", "DR"],
     "wham": ["GT", "DP", "SP"],
+    "mutect2": ["GT", "AD", "AF", "DP", "F1R2", "F2R1", "FAD", "SB"],
 }
-
-FIELDS_SNPEFF = {
-    "ANN": [
-        "ALLELE",
-        "EFFECT",
-        "IMPACT",
-        "GENE",
-        "GENEID",
-        "FEATURE",
-        "FEATUREID",
-        "BIOTYPE",
-        "RANK",
-        "HGVS_C",
-        "HGVS_P",
-        "CDNA_POS",
-        "CDNA_LEN",
-        "CDS_POS",
-        "CDS_LEN",
-        "AA_POS",
-        "AA_LEN",
-        "DISTANCE",
-        "ERRORS",
-    ],
-    "LOF": ["GENE", "GENEID", "NUMTR", "PERC"],
-    "NMD": ["GENE", "GENEID", "NUMTR", "PERC"],
-    "STANDARD": ["CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER"],
-}
-
+FIELDS_COMMON = (
+    "CHROM POS ID REF ALT QUAL "
+    "ANN[*].ALLELE ANN[*].EFFECT ANN[*].IMPACT ANN[*].GENE ANN[*].GENEID "
+    "ANN[*].FEATURE ANN[*].FEATUREID ANN[*].BIOTYPE ANN[*].RANK ANN[*].HGVS_C "
+    "ANN[*].HGVS_P ANN[*].CDNA_POS ANN[*].CDNA_LEN ANN[*].CDS_POS "
+    "ANN[*].CDS_LEN ANN[*].AA_POS ANN[*].AA_LEN ANN[*].DISTANCE ANN[*].ERRORS "
+    "LOF[*].GENE LOF[*].GENEID LOF[*].NUMTR LOF[*].PERC "
+    "NMD[*].GENE NMD[*].GENEID NMD[*].NUMTR NMD[*].PERC"
+)
 TYPES_SV = ["DEL", "INS", "DUP", "INV", "BND"]
-
 MAPPER = config["mapper"]
-
 ANNOTATORS = ["vep", "snpeff", "annotsv"]
-
 SUFFIX_READ_1, SUFFIX_READ_2 = config["suffixes_fastq"]
-
 SPECIES = config["species"]
-
 DF_SAMPLE = pep.sample_table
 SAMPLES = DF_SAMPLE["sample_name"]
-
 DIR_DATA = config["dir_data"]
-
 TO_CLEAN_FQ = config["clean_fq"]
 TO_RUN_FASTQC = config["run_fastqc"]
 TO_RUN_MULTIQC = config["run_multiqc"]
+TO_CALL_MUTATIONS = config["mutation"]
 
 
 # *--------------------------------------------------------------------------* #
@@ -81,8 +59,12 @@ TO_RUN_MULTIQC = config["run_multiqc"]
 # *--------------------------------------------------------------------------* #
 wildcard_constraints:
     sample=r"|".join(SAMPLES),
-    caller=r"|".join(CALLERS),
+    caller_sv=r"|".join(CALLERS_SV),
+    caller_mutation=r"|".join(CALLERS_MUTATION),
+    caller=r"|".join(CALLERS_SV + CALLERS_MUTATION),
     type_sv=r"|".join(TYPES_SV),
+    annotator=r"|".join(ANNOTATORS),
+    mutation=r"|".join(MUTATIONS),
 
 
 # *--------------------------------------------------------------------------* #

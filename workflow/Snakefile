@@ -18,11 +18,18 @@ include: "rules/gatk/base_recalibration.smk"
 include: "rules/mapper/bwa.smk"
 
 
-for caller in CALLERS:
+for caller in CALLERS_SV:
 
-    include: f"rules/caller/{caller}.smk"
+    include: f"rules/caller/sv/{caller}.smk"
 
 
+for caller in CALLERS_MUTATION:
+
+    include: f"rules/caller/mutation/{caller}.smk"
+
+
+include: "rules/gatk/learn_read_orientation_model.smk"
+include: "rules/gatk/calculate_contamination.smk"
 include: "rules/annotator/cache.smk"
 
 
@@ -31,11 +38,14 @@ for annotator in ANNOTATORS:
     include: f"rules/annotator/{annotator}.smk"
 
 
-include: "rules/filtration/duphold.smk"
-include: "rules/filtration/hard_filter.smk"
-include: "rules/filtration/separate_types.smk"
-include: "rules/filtration/survivor.smk"
-include: "rules/filtration/extract_annotations.smk"
-include: "rules/filtration/convert_annotations.smk"
-include: "rules/filtration/filter_annotations.smk"
-include: "rules/filtration/survivor_final.smk"
+include: "rules/filtration/sv/duphold.smk"
+include: "rules/filtration/sv/hard_filter.smk"
+include: "rules/filtration/sv/separate_types.smk"
+include: "rules/filtration/sv/survivor.smk"
+include: "rules/filtration/sv/extract_annotations.smk"
+include: "rules/filtration/sv/convert_annotations.smk"
+include: "rules/filtration/sv/filter_annotations.smk"
+include: "rules/filtration/sv/survivor_final.smk"
+include: "rules/filtration/mutation/hard_filter.smk"
+include: "rules/filtration/mutation/extract_annotations.smk"
+include: "rules/filtration/mutation/convert_annotations.smk"

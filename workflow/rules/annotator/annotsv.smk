@@ -5,23 +5,23 @@ rule annotsv:
         "../../envs/annotsv.yaml"
     input:
         **get_annotsv_cache_outputs(),
-        vcf="{caller}/{sample}/{sample}.vcf",
+        vcf="{caller_sv}/{sample}/{sample}.vcf",
     output:
-        tsv=touch(protected("{caller}/{sample}/{sample}.annotsv.tsv")),
+        tsv=touch(protected("{caller_sv}/{sample}/{sample}.annotsv.tsv")),
         tsv_unannotated=touch(
-            protected("{caller}/{sample}/{sample}.annotsv.unannotated.tsv")
+            protected("{caller_sv}/{sample}/{sample}.annotsv.unannotated.tsv")
         ),
     params:
-        dir="{caller}/{sample}",
+        dir="{caller_sv}/{sample}",
         dir_cache=config["cache_annotsv"],
         genome=format_genome(config["genome"]),
         max_size=config["max_size_annotsv"],
         size_chunk=config["size_chunk"],
     log:
-        "logs/{sample}/annotsv.{caller}.log",
+        "logs/{sample}/annotsv.{caller_sv}.log",
     shell:
         """
-        {{ if [ {wildcards.caller} == "wham" ]; then
+        {{ if [ {wildcards.caller_sv} == "wham" ]; then
             input={input.vcf}
 
             bcftools filter -i "INFO/SVTYPE != 'BND' & ABS(INFO/SVLEN) > {params.max_size}" {input.vcf} > ${{input%.*}}.long.vcf

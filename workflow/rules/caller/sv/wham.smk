@@ -25,7 +25,7 @@ rule wham:
 
 rule format_wham:
     conda:
-        "../../envs/bcftools.yaml"
+        "../../../envs/bcftools.yaml"
     input:
         vcf="wham/{sample}/tmp.vcf",
         fai=fai_fasta,

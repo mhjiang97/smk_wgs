@@ -10,7 +10,7 @@ min_reads=${snakemake_params[min_reads]}
 min_coverage=${snakemake_params[min_coverage]}
 min_dhffc=${snakemake_params[min_dhffc]}
 max_dhbfc=${snakemake_params[max_dhbfc]}
-caller=${snakemake_wildcards[caller]}
+caller=${snakemake_wildcards[caller_sv]}
 
 formula_length="INFO/SVTYPE != \"BND\" & ABS(INFO/SVLEN) < ${min_size}"
 formula_del="INFO/SVTYPE == \"DEL\" & FMT/DHFFC[0] > ${min_dhffc}"

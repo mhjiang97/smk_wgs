@@ -1,10 +1,10 @@
 rule survivor:
     conda:
-        "../../envs/survivor.yaml"
+        "../../../envs/survivor.yaml"
     input:
         vcfs=expand(
             "{caller}/{{sample}}/{{sample}}.{{type_sv}}.vcf",
-            caller=sorted(CALLERS),
+            caller=sorted(CALLERS_SV),
         ),
     output:
         list="survivor/{sample}/vcfs.{type_sv}.list",
@@ -13,7 +13,7 @@ rule survivor:
         vcf="survivor/{sample}/{sample}.{type_sv}.merged.vcf",
     params:
         min_size=config["min_size"],
-        callers=sorted(CALLERS),
+        callers=sorted(CALLERS_SV),
         distance_sv=lambda wildcards: config["distance_sv"][wildcards.type_sv],
         n_callers=lambda wildcards: config["n_callers"][wildcards.type_sv],
         consider_type=lambda wildcards: format_survivor_parameters(
@@ -28,4 +28,4 @@ rule survivor:
     log:
         "logs/{sample}/survivor.{type_sv}.log",
     script:
-        "../../scripts/survivor.sh"
+        "../../../scripts/survivor.sh"

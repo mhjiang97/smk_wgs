@@ -14,9 +14,14 @@ from rich.logging import RichHandler
 def get_targets():
     targets = []
 
-    targets += [
-        f"{MAPPER}/{sample}/{sample}.sorted.md.recal.bam" for sample in SAMPLES
-    ]
+    if TO_CALL_MUTATIONS:
+        targets += [
+            f"{caller}/{sample}/{sample}.{mutation}{suffix}"
+            for sample in SAMPLES
+            for caller in CALLERS_MUTATION
+            for mutation in MUTATIONS
+            for suffix in [".vep.maf", ".snpeff.tsv"]
+        ]
 
     if TO_CLEAN_FQ:
         targets += [f"fastp/{sample}/{sample}.json" for sample in SAMPLES]
@@ -164,9 +169,7 @@ def validate_files(config, parameters):
             raise ValueError()
 
 
-def perform_validations_with_rich(
-    config, vep_env_path, annotsv_env_path, file_params
-):
+def perform_validations_with_rich(config, vep_env_path, annotsv_env_path, file_params):
     root = logging.getLogger()
     old_level = root.level
     old_handlers = root.handlers.copy()
@@ -186,3 +189,64 @@ def perform_validations_with_rich(
 
     root.setLevel(old_level)
     root.handlers = old_handlers
+
+
+def get_extra_arguments(rule_name):
+    if "args_extra" in config and rule_name in config["args_extra"]:
+        return config["args_extra"][rule_name]
+
+    return ""
+
+
+def get_snv_filters(wildcards):
+    caller = wildcards.caller_mutation
+    sample = wildcards.sample
+
+    min_reads = config["min_reads"]
+    min_coverage = config["min_coverage"]
+
+    if caller == "mutect2":
+        filters = (
+            f"FILTER = 'PASS' & "
+            f"FMT/DP >= {min_coverage} & "
+            f"INFO/TLOD >= 6.3 & "
+            f"TYPE = 'snp' &"
+            f"FMT/AD[0:1] >= {min_reads}"
+        )
+    else:
+        raise ValueError("Unsupported caller")
+
+    return filters
+
+
+def get_indel_filters(wildcards):
+    caller = wildcards.caller_mutation
+    sample = wildcards.sample
+
+    min_reads = config["min_reads"]
+    min_coverage = config["min_coverage"]
+
+    if caller == "mutect2":
+        filters = (
+            f"FILTER = 'PASS' & "
+            f"FMT/DP >= {min_coverage} & "
+            f"INFO/TLOD >= 6.3 & "
+            f"TYPE = 'indel' &"
+            f"FMT/AD[0:1] >= {min_reads}"
+        )
+    else:
+        raise ValueError("Unsupported caller")
+
+    return filters
+
+
+def get_convert_snpeff_arguments(wildcards):
+    caller = wildcards.caller_mutation
+
+    fields = CALLER2FMTS.get(caller)
+    if fields is None:
+        raise ValueError("Unsupported caller")
+
+    arg = " ".join(f"GEN[*].{field}" for field in fields)
+
+    return arg

@@ -1,6 +1,6 @@
 rule tiddit:
     conda:
-        "../../envs/tiddit.yaml"
+        "../../../envs/tiddit.yaml"
     input:
         bam=f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam",
         fasta=config["fasta"],

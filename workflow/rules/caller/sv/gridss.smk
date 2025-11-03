@@ -1,6 +1,6 @@
 rule gridss:
     conda:
-        "../../envs/gridss.yaml"
+        "../../../envs/gridss.yaml"
     input:
         bam=f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam",
         fasta=config["fasta"],
@@ -40,7 +40,7 @@ rule gridss:
 
 rule format_gridss:
     conda:
-        "../../envs/r.yaml"
+        "../../../envs/r.yaml"
     input:
         vcf="gridss/{sample}/tmp.vcf",
     output:

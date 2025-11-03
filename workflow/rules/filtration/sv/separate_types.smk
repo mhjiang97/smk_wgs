@@ -1,12 +1,12 @@
 rule separate_types:
     conda:
-        "../../envs/bcftools.yaml"
+        "../../../envs/bcftools.yaml"
     input:
-        vcf="{caller}/{sample}/{sample}.duphold.filtered.vcf",
+        vcf="{caller_sv}/{sample}/{sample}.duphold.filtered.vcf",
     output:
-        vcf="{caller}/{sample}/{sample}.{type_sv}.vcf",
+        vcf="{caller_sv}/{sample}/{sample}.{type_sv}.vcf",
     log:
-        "logs/{sample}/separate_types.{caller}.{type_sv}.log",
+        "logs/{sample}/separate_types.{caller_sv}.{type_sv}.log",
     shell:
         """
         bcftools filter \\

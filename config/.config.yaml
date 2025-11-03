@@ -1,10 +1,6 @@
 dir_run: /projects/project_xxx/analysis/wgs
 dir_data: /projects/project_xxx/data/wgs
 
-libs_r:
-  - /local/var/R/Rlibrary4/
-  - /.condax/r-base/lib/R/library
-
 species: homo_sapiens
 genome: GRCh37
 
@@ -19,7 +15,11 @@ polymorphism_known:
   - /doc/db/gatkbundle/chr/Mills_and_1000G_gold_standard.indels.b37.vcf.gz
   - /doc/db/gatkbundle/chr/1000G_phase1.snps.high_confidence.b37.vcf.gz
 
-dbsnp: /doc/db/gatkbundle/chr/dbsnp_138.b37.vcf.gz
+dbsnp: /doc/db/igenomes/gatk/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz
+pon: /doc/db/igenomes/gatk/GRCh38/Annotation/GATKBundle/1000g_pon.hg38.vcf.gz
+resource_germline: /doc/db/igenomes/gatk/GRCh38/Annotation/GATKBundle/af-only-gnomad.hg38.vcf.gz
+
+bed_target: /doc/db/igenomes/gatk/GRCh38/Annotation/intervals/wgs_calling_regions_noseconds.hg38.bed
 
 suffixes_fastq:
   - "_R1.fq.gz"
@@ -44,6 +44,7 @@ size_chunk: 300
 min_reads: 3
 min_coverage: 6
 min_quality_mapping: 20
+min_quality_base: 10
 min_size: 50
 min_dhffc: 0.7
 max_dhbfc: 1.3

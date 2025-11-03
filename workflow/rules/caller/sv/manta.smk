@@ -33,7 +33,7 @@ rule manta_config:
 
 rule manta:
     conda:
-        "../../envs/manta.yaml"
+        "../../../envs/manta.yaml"
     input:
         bam=f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam",
         fasta=config["fasta"],

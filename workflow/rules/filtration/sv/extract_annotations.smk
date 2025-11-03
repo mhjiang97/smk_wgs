@@ -1,6 +1,6 @@
 rule extract_sv_ids:
     conda:
-        "../../envs/bcftools.yaml"
+        "../../../envs/bcftools.yaml"
     input:
         survivor="survivor/{sample}/{sample}.{type_sv}.merged.vcf",
     output:
@@ -20,23 +20,23 @@ rule extract_sv_ids:
         """
 
 
-rule extract_annotations:
+rule extract_sv_annotations:
     conda:
-        "../../envs/bcftools.yaml"
+        "../../../envs/bcftools.yaml"
     input:
-        vep="{caller}/{sample}/{sample}.vep.vcf",
-        snpeff="{caller}/{sample}/{sample}.snpeff.vcf",
-        vcf="{caller}/{sample}/{sample}.{type_sv}.vcf",
+        vep="{caller_sv}/{sample}/{sample}.vep.vcf",
+        snpeff="{caller_sv}/{sample}/{sample}.snpeff.vcf",
+        vcf="{caller_sv}/{sample}/{sample}.{type_sv}.vcf",
         tab="survivor/{sample}/{sample}.{type_sv}.tab",
     output:
-        ids=touch(temp("survivor/{sample}/{caller}.{type_sv}.id")),
-        vep="{caller}/{sample}/merged/{sample}.{type_sv}.vep.vcf",
-        snpeff="{caller}/{sample}/merged/{sample}.{type_sv}.snpeff.vcf",
-        vcf="{caller}/{sample}/merged/{sample}.{type_sv}.vcf",
+        ids=touch(temp("survivor/{sample}/{caller_sv}.{type_sv}.id")),
+        vep="{caller_sv}/{sample}/merged/{sample}.{type_sv}.vep.vcf",
+        snpeff="{caller_sv}/{sample}/merged/{sample}.{type_sv}.snpeff.vcf",
+        vcf="{caller_sv}/{sample}/merged/{sample}.{type_sv}.vcf",
     params:
-        callers=sorted(CALLERS),
+        callers=sorted(CALLERS_SV),
     log:
-        "logs/{sample}/extract_annotations.{caller}.{type_sv}.log",
+        "logs/{sample}/extract_sv_annotations.{caller_sv}.{type_sv}.log",
     shell:
         """
         {{ IFS=" " read -r -a callers_unsorted <<< "{params.callers}"

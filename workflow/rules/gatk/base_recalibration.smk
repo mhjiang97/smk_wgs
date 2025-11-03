@@ -39,9 +39,7 @@ rule apply_bqsr:
     output:
         bam=protected(f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam"),
         bai=temp(f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bai"),
-        bai_renamed=protected(
-            f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam.bai"
-        ),
+        bai_renamed=protected(f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam.bai"),
     resources:
         mem_mb=1,
         tmpdir=lambda wildcards: f"{MAPPER}/{wildcards.sample}",

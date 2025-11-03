@@ -1,14 +1,14 @@
 rule duphold:
     input:
-        vcf="{caller}/{sample}/{sample}.vcf",
+        vcf="{caller_sv}/{sample}/{sample}.vcf",
         bam=f"{MAPPER}/{{sample}}/{{sample}}.sorted.md.recal.bam",
         fasta=config["fasta"],
     output:
-        bcf=temp("{caller}/{sample}/{sample}.sorted.bcf"),
-        vcf="{caller}/{sample}/{sample}.duphold.vcf",
+        bcf=temp("{caller_sv}/{sample}/{sample}.sorted.bcf"),
+        vcf="{caller_sv}/{sample}/{sample}.duphold.vcf",
     threads: 1
     log:
-        "logs/{sample}/duphold.{caller}.log",
+        "logs/{sample}/duphold.{caller_sv}.log",
     shell:
         """
         {{ bcftools sort -Ou {input.vcf} > {output.bcf}

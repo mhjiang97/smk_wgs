@@ -1,7 +1,4 @@
-libs_r <- snakemake@params[["libs_r"]]
-if (!is.null(libs_r)) {
-  .libPaths(c(libs_r, .libPaths()))
-}
+.libPaths(paste0(R.home(), "/library"))
 snakemake@source("utils.R")
 load_pkg(
   c(
