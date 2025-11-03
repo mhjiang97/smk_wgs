@@ -210,7 +210,7 @@ def get_snv_filters(wildcards):
             f"FILTER = 'PASS' & "
             f"FMT/DP >= {min_coverage} & "
             f"INFO/TLOD >= 6.3 & "
-            f"TYPE = 'snp' &"
+            f"TYPE = 'snp' & "
             f"FMT/AD[0:1] >= {min_reads}"
         )
     else:
@@ -231,7 +231,7 @@ def get_indel_filters(wildcards):
             f"FILTER = 'PASS' & "
             f"FMT/DP >= {min_coverage} & "
             f"INFO/TLOD >= 6.3 & "
-            f"TYPE = 'indel' &"
+            f"TYPE = 'indel' & "
             f"FMT/AD[0:1] >= {min_reads}"
         )
     else:
