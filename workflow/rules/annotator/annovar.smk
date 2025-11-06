@@ -21,7 +21,7 @@ rule convert_vcf_to_annovar:
 
 rule annovar:
     input:
-        annovar="{caller}/{sample}/av.{sample}.avinput",
+        unpack(get_annovar_inputs),
     output:
         tmp=temp(f"{{caller}}/{{sample}}/{{sample}}.{GENOME2}_multianno.txt"),
         annovar=protected("{caller}/{sample}/{sample}.annovar.tsv"),

@@ -22,7 +22,8 @@ rule extract_mutations_annotations:
 
 
 rule extract_annovar_annotations:
-    conda: "../../../envs/python.yaml"
+    conda:
+        "../../../envs/python.yaml"
     input:
         anno="{caller}/{sample}/{sample}.annovar.tsv",
         tmp="{caller}/{sample}/av.{sample}.avinput",
@@ -32,6 +33,6 @@ rule extract_annovar_annotations:
         anno_snv="{caller}/{sample}/{sample}.snvs.annovar.tsv",
         anno_indel="{caller}/{sample}/{sample}.indels.annovar.tsv",
     log:
-        "logs/{sample}/extract_annovar.{caller}.log",
+        "logs/{sample}/extract_annovar_annotations.{caller}.log",
     script:
         "../../../scripts/extract_annovar_annotations.py"

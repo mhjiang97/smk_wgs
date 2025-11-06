@@ -169,9 +169,7 @@ def validate_files(config, parameters):
             raise ValueError()
 
 
-def perform_validations_with_rich(
-    config, vep_env_path, annotsv_env_path, file_params
-):
+def perform_validations_with_rich(config, vep_env_path, annotsv_env_path, file_params):
     root = logging.getLogger()
     old_level = root.level
     old_handlers = root.handlers.copy()
@@ -275,7 +273,7 @@ def get_annovar_inputs(wildcards):
     caller = wildcards.caller
 
     inputs = {
-        "vcf": f"{caller}/{sample}/{sample}.vcf",
+        "annovar": f"{caller}/{sample}/av.{sample}.avinput",
     }
 
     for o in ["gene", "region", "filter"]:
