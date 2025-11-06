@@ -279,26 +279,26 @@ def get_annovar_inputs(wildcards):
     for o in ["gene", "region", "filter"]:
         values = config["protocols"][o]
         for v in values:
-            inputs[v] = f"{config['cache_annovar']}/{GENOME2}_{v}.txt"
+            inputs[v] = ancient(f"{config['cache_annovar']}/{GENOME2}_{v}.txt")
 
     return inputs
 
 
 def get_annovar_arguments():
-    protocol = []
-    operation = []
+    protocols = []
+    operations = []
     for o in ["gene", "region", "filter"]:
         values = config["protocols"][o]
         for v in values:
-            protocol.append(v)
+            protocols.append(v)
             if o == "filter":
-                operation.append("f")
+                operations.append("f")
             elif o == "region":
-                operation.append("r")
+                operations.append("r")
             elif o == "gene":
-                operation.append("g")
+                operations.append("g")
 
     return {
-        "protocol": ",".join(protocol),
-        "operation": ",".join(operation),
+        "protocol": ",".join(protocols),
+        "operation": ",".join(operations),
     }

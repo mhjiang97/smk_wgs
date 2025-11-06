@@ -40,6 +40,7 @@ FIELDS_COMMON = (
     "LOF[*].GENE LOF[*].GENEID LOF[*].NUMTR LOF[*].PERC "
     "NMD[*].GENE NMD[*].GENEID NMD[*].NUMTR NMD[*].PERC"
 )
+PROTOCOLS_UCSC = ["cytoBand"]
 TYPES_SV = ["DEL", "INS", "DUP", "INV", "BND"]
 MAPPER = config["mapper"]
 SUFFIX_READ_1, SUFFIX_READ_2 = config["suffixes_fastq"]

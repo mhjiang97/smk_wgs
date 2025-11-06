@@ -83,3 +83,58 @@ rule download_annotsv_cache:
         done; }} \\
         > {log} 2>&1
         """
+
+
+rule query_annovar_protocols:
+    output:
+        txt=f"{config['cache_annovar']}/{GENOME2}_avdblist.txt",
+    log:
+        "logs/query_annovar_protocols.log",
+    params:
+        dir=config["cache_annovar"],
+        genome=GENOME2,
+    shell:
+        """
+        {{ annotate_variation.pl \\
+            -buildver {params.genome} \\
+            -webfrom annovar \\
+            -downdb avdblist \\
+            {params.dir} }} \\
+        > {output.txt} 2> {log}
+        """
+
+
+rule download_annovar_cache:
+    input:
+        txt=ancient(f"{config['cache_annovar']}/{GENOME2}_avdblist.txt"),
+    output:
+        txt=f"{config['cache_annovar']}/{GENOME2}_{{protocol}}.txt",
+    params:
+        dir=config["cache_annovar"],
+        file=f"{GENOME2}_{{protocol}}.txt.gz",
+        genome=GENOME2,
+        is_annovar=lambda wildcards: wildcards.protocol not in PROTOCOLS_UCSC,
+        arg_webfrom=lambda wildcards: (
+            f"-webfrom annovar" if wildcards.protocol not in PROTOCOLS_UCSC else ""
+        ),
+    log:
+        "logs/download_annovar_cache.{protocol}.log",
+    run:
+        if params.is_annovar:
+            with open(input.txt) as f:
+                avdblist = {line.split()[0] for line in f if line.strip()}
+
+            if params.file not in avdblist:
+                raise ValueError(f"Protocol {wildcards.protocol} not found in avdblist.")
+
+        shell(
+            """
+            annotate_variation.pl \\
+                -buildver {params.genome} \\
+                -downdb \\
+                {params.arg_webfrom} \\
+                {wildcards.protocol} \\
+                {params.dir} \\
+            > {log} 2>&1
+            """
+        )
