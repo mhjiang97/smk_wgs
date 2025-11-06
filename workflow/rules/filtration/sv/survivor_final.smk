@@ -16,7 +16,9 @@ rule survivor_final:
         min_size=config["min_size"],
         callers=sorted(CALLERS_SV),
         distance_sv=lambda wildcards: config["distance_sv"][wildcards.type_sv],
-        n_callers=lambda wildcards: max(config["n_callers"][wildcards.type_sv] - 1, 1),
+        n_callers=lambda wildcards: max(
+            config["n_callers"][wildcards.type_sv] - 1, 1
+        ),
         consider_type=lambda wildcards: format_survivor_parameters(
             config["consider_type"][wildcards.type_sv]
         ),

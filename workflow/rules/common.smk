@@ -21,7 +21,7 @@ if config["dir_run"] and config["dir_run"] is not None:
 CALLERS_SV = ["gridss", "manta", "svaba", "tiddit", "wham"]
 CALLERS_SV.sort()
 CALLERS_MUTATION = ["mutect2"]
-ANNOTATORS = ["vep", "snpeff"]
+ANNOTATORS = ["vep", "snpeff", "annovar", "annotsv"]
 MUTATIONS = ["snvs", "indels"]
 CALLER2FMTS = {
     "gridss": ["GT", "AF"],
@@ -42,9 +42,9 @@ FIELDS_COMMON = (
 )
 TYPES_SV = ["DEL", "INS", "DUP", "INV", "BND"]
 MAPPER = config["mapper"]
-ANNOTATORS = ["vep", "snpeff", "annotsv"]
 SUFFIX_READ_1, SUFFIX_READ_2 = config["suffixes_fastq"]
 SPECIES = config["species"]
+GENOME2 = convert_genome(config["genome"])
 DF_SAMPLE = pep.sample_table
 SAMPLES = DF_SAMPLE["sample_name"]
 DIR_DATA = config["dir_data"]
@@ -80,9 +80,7 @@ fai_fasta = f"{config['fasta']}.fai"
 path_cache_snpeff = (
     f"{config['cache_snpeff']}/{config['genome']}.{config['version_snpeff']}"
 )
-path_cache_vep = (
-    f"{config['cache_vep']}/{config['species']}/{config['version_vep']}_{config['genome']}"
-)
+path_cache_vep = f"{config['cache_vep']}/{config['species']}/{config['version_vep']}_{config['genome']}"
 
 
 # *--------------------------------------------------------------------------* #

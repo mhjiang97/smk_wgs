@@ -19,3 +19,19 @@ rule extract_mutations_annotations:
         bcftools filter -i 'ID=@{input.ids_indel}' {input.vcf_anno} > {output.indels_anno}; }} \\
         1> {log} 2>&1
         """
+
+
+rule extract_annovar_annotations:
+    conda: "../../../envs/python.yaml"
+    input:
+        anno="{caller}/{sample}/{sample}.annovar.tsv",
+        tmp="{caller}/{sample}/av.{sample}.avinput",
+        vcf_snv="{caller}/{sample}/{sample}.snvs.vcf",
+        vcf_indel="{caller}/{sample}/{sample}.indels.vcf",
+    output:
+        anno_snv="{caller}/{sample}/{sample}.snvs.annovar.tsv",
+        anno_indel="{caller}/{sample}/{sample}.indels.annovar.tsv",
+    log:
+        "logs/{sample}/extract_annovar.{caller}.log",
+    script:
+        "../../../scripts/extract_annovar_annotations.py"

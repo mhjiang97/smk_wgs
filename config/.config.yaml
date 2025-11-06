@@ -33,10 +33,23 @@ penalty_mismatch: 3
 
 cache_vep: /.vep
 cache_snpeff: /doc/tool/annotator/snpeff
+cache_annovar: /doc/tool/annotator/annovar
 cache_annotsv: /doc/tool/annotator/annotsv
 version_vep: 114
 version_snpeff: 87
 version_annotsv: v3.5
+protocols:
+  filter:
+    [
+      "avsnp151", "clinvar_20250721", "cosmic102", "dbnsfp42c", "dbscsnv11",
+      "exac03", "gnomad41_exome", "gnomad41_genome", "icgc28",
+      "intervar_20250721"
+    ]
+  region:
+    ["cytoBand"]
+  gene:
+    ["refGene"]
+
 max_size_vep: 50000000
 max_size_annotsv: 10000000
 size_chunk: 300

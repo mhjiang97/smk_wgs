@@ -1,11 +1,12 @@
 software-deployment-method:
   - conda
-conda-prefix: /.snakemake/envs/smk_sv_ngs
+conda-prefix: /home/mjhk/.snakemake/envs/smk_wgs
+scheduler: greedy
 printshellcmds: True
 keep-incomplete: True
 cores: 80
 resources:
-  mem_mb: 500000  # 500GB
+  mem_mb: 200000  # 200GB
 default-resources:
   mem_mb: 5000  # 5GB
 set-threads:
@@ -17,8 +18,10 @@ set-threads:
   wham: 10
   gridss: 10
   svaba: 10
+  mutect2: 10
   duphold: 5
   vep: 5
+  annovar: 5
   filter_annotations: 20
 set-resources:
   mark_duplicates:
@@ -32,3 +35,13 @@ set-resources:
     mem_mb_other: 10000  # 10GB
   snpeff:
     mem_mb: 50000  # 50GB
+  mutect2:
+    mem_mb: 10000  # 10GB
+  learn_read_orientation_model:
+    mem_mb: 10000  # 10GB
+  get_pileup_summaries:
+    mem_mb: 10000  # 10GB
+  calculate_contamination:
+    mem_mb: 10000  # 10GB
+  filter_mutect_calls:
+    mem_mb: 10000  # 10GB

@@ -20,7 +20,7 @@ def get_targets():
             for sample in SAMPLES
             for caller in CALLERS_MUTATION
             for mutation in MUTATIONS
-            for suffix in [".vep.maf", ".snpeff.tsv"]
+            for suffix in [".vep.maf", ".snpeff.tsv", ".annovar.tsv"]
         ]
 
     if TO_CLEAN_FQ:
@@ -169,7 +169,9 @@ def validate_files(config, parameters):
             raise ValueError()
 
 
-def perform_validations_with_rich(config, vep_env_path, annotsv_env_path, file_params):
+def perform_validations_with_rich(
+    config, vep_env_path, annotsv_env_path, file_params
+):
     root = logging.getLogger()
     old_level = root.level
     old_handlers = root.handlers.copy()
@@ -250,3 +252,55 @@ def get_convert_snpeff_arguments(wildcards):
     arg = " ".join(f"GEN[*].{field}" for field in fields)
 
     return arg
+
+
+def convert_genome(genome):
+    map_g = {
+        "GRCh38": "hg38",
+        "GRCh37": "hg19",
+        "hg19": "hg19",
+        "hg38": "hg38",
+    }
+
+    g_new = map_g.get(genome)
+
+    if g_new is None:
+        raise ValueError(f"Unsupported genome '{genome}'")
+
+    return g_new
+
+
+def get_annovar_inputs(wildcards):
+    sample = wildcards.sample
+    caller = wildcards.caller
+
+    inputs = {
+        "vcf": f"{caller}/{sample}/{sample}.vcf",
+    }
+
+    for o in ["gene", "region", "filter"]:
+        values = config["protocols"][o]
+        for v in values:
+            inputs[v] = f"{config['cache_annovar']}/{GENOME2}_{v}.txt"
+
+    return inputs
+
+
+def get_annovar_arguments():
+    protocol = []
+    operation = []
+    for o in ["gene", "region", "filter"]:
+        values = config["protocols"][o]
+        for v in values:
+            protocol.append(v)
+            if o == "filter":
+                operation.append("f")
+            elif o == "region":
+                operation.append("r")
+            elif o == "gene":
+                operation.append("g")
+
+    return {
+        "protocol": ",".join(protocol),
+        "operation": ",".join(operation),
+    }
